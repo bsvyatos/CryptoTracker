@@ -52,7 +52,7 @@ class CoinRepository @Inject constructor(
             val result = networkService.getCoinById(id)
 
             if(result is ApiSuccessResponse) {
-                result.body.data?.get(0)?.let {
+                result.body.data.get(0).let {
                     database.coinDao().insertCoin(it)
                 }
             }

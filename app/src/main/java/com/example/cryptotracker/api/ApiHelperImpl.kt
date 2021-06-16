@@ -8,6 +8,6 @@ import javax.inject.Inject
 
 class ApiHelperImpl @Inject constructor(private val apiService: ApiService): ApiHelper {
     override suspend fun getCoinListings(start: Int, limit: Int): ApiResponse<CoinListingsResponse> = apiService.getCoinListings(start, limit)
-    override suspend fun getCoinsMetadata(ids: List<Int>): ApiResponse<CoinMetaDataResponse> = apiService.getCoinMetaData(ids)
+    override suspend fun getCoinsMetadata(ids: String): ApiResponse<CoinMetaDataResponse> = apiService.getCoinMetaData(ids)
     override suspend fun getCoinById(id: String): ApiResponse<CoinListingsResponse> = apiService.getCoinListingById(id)
 }

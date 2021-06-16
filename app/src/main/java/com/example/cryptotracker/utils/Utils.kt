@@ -15,6 +15,12 @@ class Utils {
             return regex.find(str)?.value?.toFloat()
         }
 
+        fun getCommaSeparatedIds(data: List<CoinData>): String {
+            return data.map {
+                it.id.toString()
+            }.reduce { a, b -> "$a,$b"}
+        }
+
         fun getChangeTextColor(minusColor: Int, plusColor: Int, maxColor: Int, value: Float): Int {
             val color: Int = if(value > 0) {
                 plusColor

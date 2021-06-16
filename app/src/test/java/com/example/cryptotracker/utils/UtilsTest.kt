@@ -10,11 +10,11 @@ import org.mockito.kotlin.mock
 
 class UtilsTest : TestCase() {
     private lateinit var pageList: List<PagingSource.LoadResult.Page<*, *>>
+    private lateinit var listOfCoins: List<CoinData>
 
     @Before
     override fun setUp() {
-        val coinData: CoinData = mock()
-        val listOfCoins: List<CoinData> = (1..10).toList().map { coinData }
+        listOfCoins = (1..10).toList().map { CoinData(id = it) }
         val page = mock<PagingSource.LoadResult.Page<Int, CoinData>>()
         Mockito.`when`(page.data).thenReturn(listOfCoins)
         pageList = listOf(page, page)
@@ -32,5 +32,10 @@ class UtilsTest : TestCase() {
     @Test
     fun testNextPageValue() {
         assert(Utils.getNextPageValue(pageList) == 21)
+    }
+
+    @Test
+    fun testCommaSeparatedIds() {
+        assertEquals("1,2,3,4,5,6,7, 8, 9, 10", Utils.getCommaSeparatedIds(listOfCoins))
     }
 }

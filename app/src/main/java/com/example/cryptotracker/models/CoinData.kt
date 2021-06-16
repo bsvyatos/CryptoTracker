@@ -9,25 +9,25 @@ data class CoinData(
     @PrimaryKey
     val id: Int,
     @SerializedName("circulating_supply")
-    val circulatingSupply: Double?,
+    val circulatingSupply: Double? = null,
     @SerializedName("cmc_rank")
-    val cmcRank: Double?,
+    val cmcRank: Double? = null,
     @SerializedName("date_added")
-    val dateAdded: String?,
+    val dateAdded: String? = null,
     @SerializedName("last_updated")
-    val lastUpdated: String?,
+    val lastUpdated: String? = null,
     @SerializedName("max_supply")
-    val maxSupply: Double?,
-    val name: String?,
+    val maxSupply: Double? = null,
+    val name: String? = null,
     @SerializedName("num_market_pairs")
-    val numMarketPairs: Double?,
-    val quote: Quote?,
-    val slug: String?,
-    val symbol: String?,
-    val tags: List<String>?,
+    val numMarketPairs: Double? = null,
+    val quote: Quote? = null,
+    val slug: String? = null,
+    val symbol: String? = null,
+    val tags: List<String>? = null,
     @SerializedName("total_supply")
-    val totalSupply: Double?,
-    var logo: String?,
-    var urls: Urls?,
-    var twitterUsername: String?
+    val totalSupply: Double? = null,
+    var logo: String? = null,
+    var urls: Urls? = null,
+    var twitterUsername: String? = null
 )

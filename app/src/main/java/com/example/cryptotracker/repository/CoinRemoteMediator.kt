@@ -68,14 +68,12 @@ class CoinRemoteMediator @Inject constructor(
 
                         val data = response.body.data
 
-                        // Get a list of coin ids in this format "id1, id2... idn"
-//                        val ids = data.map {
-//                            it.id.toString()
-//                        }.reduce { a, b -> "$a, $b"}
+                        // Get a list of coin ids in this format "id1, id2, ..., idn"
+                        val ids = Utils.getCommaSeparatedIds(data)
 
-                        val ids: List<Int> = data.mapNotNull {
-                            it.id
-                        }
+//                        val ids: List<Int> = data.mapNotNull {
+//                            it.id
+//                        }
 
                         val metaDataResponse = networkService.getCoinsMetadata(ids)
 
