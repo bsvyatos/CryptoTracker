@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">CryptoTracker</string>
+    <string name="retry">Retry</string>
+    <string name="no_results">No Results</string>
+    <string name="coin_logo_img_desc">Coin logo</string>
+    <string name="change_in_24h_txt">Change in 24h</string>
+    <string name="text_24h">1%s 24h</string>
+    <string name="text_1h">1%s 1h</string>
+    <string name="text_7d">1%s 7d</string>
+    <string name="change_7d_txt">Change 7d</string>
+    <string name="change_1h_txt">Change 1h</string>
+    <string name="coin_price">%f$</string>
+
 </resources>

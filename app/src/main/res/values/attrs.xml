@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ColoredChangeTextView">
+        <attr name="minusColor" format="color" />
+        <attr name="plusColor" format="color" />
+        <attr name="maxColorValue" format="integer"/>
+    </declare-styleable>
+</resources>

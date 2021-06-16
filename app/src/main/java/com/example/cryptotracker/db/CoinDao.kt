@@ -1,6 +1,7 @@
 package com.example.cryptotracker.db
 
 import androidx.lifecycle.LiveData
+import androidx.paging.PagingSource
 import androidx.room.*
 import com.example.cryptotracker.models.CoinData
 import kotlinx.coroutines.flow.Flow
@@ -10,6 +11,9 @@ interface CoinDao {
 
     @Query("SELECT * FROM coins")
     fun getAllCoinData(): Flow<List<CoinData>>
+
+    @Query("SELECT * FROM coins")
+    fun getCoinPagingSource(): PagingSource<Int, CoinData>
 
     @Query("SELECT * FROM coins WHERE id = :id")
     fun getCoinDataById(id: Int): Flow<CoinData>

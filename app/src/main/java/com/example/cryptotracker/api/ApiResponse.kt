@@ -1,7 +1,6 @@
 package com.example.cryptotracker.api
 import retrofit2.Response
 
-@Suppress("unused") // T is used in extending classes
 sealed class ApiResponse<T> {
     companion object {
         fun <T> create(error: Throwable): ApiErrorResponse<T> {
@@ -14,7 +13,7 @@ sealed class ApiResponse<T> {
                 if (body == null || response.code() == 204) {
                     ApiEmptyResponse()
                 } else {
-                    ApiSuccessResponse( body)
+                    ApiSuccessResponse(body)
                 }
             } else {
                 val msg = response.errorBody()?.string()
@@ -34,10 +33,6 @@ sealed class ApiResponse<T> {
  */
 class ApiEmptyResponse<T> : ApiResponse<T>()
 
-data class ApiSuccessResponse<T>(val body: T) : ApiResponse<T>() {
-
-    // constructor(body: T) : this(body = body)
-
-}
+data class ApiSuccessResponse<T>(val body: T) : ApiResponse<T>()
 
 data class ApiErrorResponse<T>(val errorMessage: String) : ApiResponse<T>()

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="coinData"
+            type="com.example.cryptotracker.models.CoinData" />
+
+        <variable
+            name="viewModel"
+            type="com.example.cryptotracker.ui.main.MainViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/coin_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            app:imageUrl="@{coinData.logo}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars"
+            android:contentDescription="@string/coin_logo_img_desc" />
+
+        <TextView
+            android:id="@+id/coin_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{coinData.name}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/coin_icon"
+            app:layout_constraintTop_toTopOf="@+id/coin_icon" />
+
+        <com.example.cryptotracker.utils.ColoredChangeTextView
+            android:id="@+id/change_24h"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginRight="15dp"
+            app:changeTxt="@{coinData.quote.USD.percent_change_24h}"
+            app:changePeriod="@{@string/text_24h}"
+            android:text="@string/change_in_24h_txt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/change_1h" />
+
+        <com.example.cryptotracker.utils.ColoredChangeTextView
+            android:id="@+id/change_1h"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginRight="15dp"
+            app:changeTxt="@{coinData.quote.USD.percent_change_24h}"
+            app:changePeriod="@{@string/text_1h}"
+            android:text="@string/change_1h_txt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/coin_icon" />
+
+        <com.example.cryptotracker.utils.ColoredChangeTextView
+            android:id="@+id/change_7d"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginRight="15dp"
+            app:changeTxt="@{coinData.quote.USD.percent_change_24h}"
+            app:changePeriod="@{@string/text_7d}"
+            android:text="@string/change_7d_txt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/change_24h" />
+
+        <TextView
+            android:id="@+id/coin_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:text="@{@string/coin_price(coinData.quote.USD.price)}"
+            app:layout_constraintBottom_toBottomOf="@+id/coin_icon"
+            app:layout_constraintStart_toEndOf="@+id/coin_icon"
+            app:layout_constraintTop_toTopOf="@+id/coin_icon" />
+
+        <TextView
+            android:id="@+id/coin_volume_cap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="8dp"
+            android:text="@{Double.toString(coinData.quote.USD.volume_24h / coinData.quote.USD.market_cap)}"
+            app:layout_constraintStart_toEndOf="@+id/coin_icon"
+            app:layout_constraintTop_toBottomOf="@+id/coin_price" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

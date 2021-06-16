@@ -1,6 +1,6 @@
 package com.example.cryptotracker.models
 
-data class Status(
+data class CoinListingsStatus(
     val credit_count: Int,
     val elapsed: Int,
     val error_code: Int,
