@@ -47,12 +47,13 @@ class CoinRepository @Inject constructor(
     fun getCachedCoinDataById(id: String, scope: CoroutineScope): Flow<CoinData> {
         val returnFlow = database.coinDao().getCoinDataById(id.toInt())
 
-        // Refresh the data in background just in case
+        // Get CoinData from db
         scope.launch(Dispatchers.IO) {
             val result = networkService.getCoinById(id)
 
+            // Refresh the data in background just in case
             if(result is ApiSuccessResponse) {
-                result.body.data.get(0).let {
+                result.body.data[id]?.let {
                     database.coinDao().insertCoin(it)
                 }
             }
