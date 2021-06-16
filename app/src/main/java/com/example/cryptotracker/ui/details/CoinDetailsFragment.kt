@@ -44,5 +44,4 @@ class CoinDetailsFragment : Fragment() {
         val testView = view?.findViewById<TextView>(R.id.change_7d)
         testView?.setText(coinData.name)
     }
-
 }
