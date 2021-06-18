@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.paging.ExperimentalPagingApi
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.cryptotracker.R
 import com.example.cryptotracker.databinding.CoinMainItemBinding
 import com.example.cryptotracker.models.CoinData

@@ -1,69 +1,104 @@
 package com.example.cryptotracker.ui.main
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.view.*
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptotracker.R
 import com.example.cryptotracker.adapters.CoinsAdapter
 import com.example.cryptotracker.adapters.CoinsLoadStateAdapter
+import com.example.cryptotracker.databinding.MainFragmentBinding
+import com.example.cryptotracker.models.CoinData
+import com.example.cryptotracker.models.CoinsSortingTypes
 import com.example.cryptotracker.utils.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @ExperimentalPagingApi
 @AndroidEntryPoint
 class MainFragment: Fragment() {
-    private var mainCoinRecyclerView: RecyclerView? = null
-    private var emptyListText: TextView? = null
-    private var progressBar: ProgressBar? = null
-    private var retryButton: Button? = null
-
     private val viewModel: MainViewModel by viewModels()
     private lateinit var coinsAdapter: CoinsAdapter
+    private lateinit var binding: MainFragmentBinding
+    private var coinQueryJob: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.main_fragment, container, false)
+        binding = MainFragmentBinding.inflate(inflater, container, false)
+        val decoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+        binding.mainCoinRecyclerView.addItemDecoration(decoration)
+        setHasOptionsMenu(true)
+        coinsAdapter = CoinsAdapter(viewModel)
+        initAdapter()
+        setUpNavigation()
+        setEventObservers()
+        getData()
+        return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        coinsAdapter = CoinsAdapter(viewModel)
-        mainCoinRecyclerView = view.findViewById(R.id.main_coin_recycler_view)
-        emptyListText = view.findViewById(R.id.emptyList)
-        progressBar = view.findViewById(R.id.progress_bar)
-        retryButton = view.findViewById(R.id.retry_button)
-        val decoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
-        mainCoinRecyclerView?.addItemDecoration(decoration)
-        initAdapter()
-        observeViewModel()
-        setUpNavigation()
-        retryButton?.setOnClickListener {
-            coinsAdapter.retry()
+    override fun onOptionsItemSelected(item: MenuItem) =
+        when (item.itemId) {
+            R.id.menu_sort -> {
+                showSortMenu()
+                true
+            }
+            else -> false
+        }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.main_fragment_menu, menu)
+    }
+
+    private fun getData() {
+        viewModel.getLatestData()
+    }
+
+    private fun showSortMenu() {
+        val view = activity?.findViewById<View>(R.id.menu_sort) ?: return
+        PopupMenu(requireContext(), view).run {
+            menuInflater.inflate(R.menu.coin_sorting_menu, menu)
+
+            menu.getItem(viewModel.coinsSort.ordinal).isChecked = true
+            setOnMenuItemClickListener {
+                viewModel.changeSorting(it)
+                true
+            }
+            show()
         }
     }
 
-    private fun observeViewModel() {
-        lifecycleScope.launch {
-            viewModel.getCoins().collectLatest {
+    private fun setEventObservers() {
+        viewModel.refreshDataEvent.observe(viewLifecycleOwner, EventObserver {
+            coinsAdapter.refresh()
+        })
+
+        viewModel.retryDataEvent.observe(viewLifecycleOwner, EventObserver {
+            coinsAdapter.retry()
+        })
+
+        viewModel.newPagingDataEvent.observe(viewLifecycleOwner, EventObserver {
+            observePagingDataFlow(it)
+        })
+    }
+
+    private fun observePagingDataFlow(flow: Flow<PagingData<CoinData>>) {
+        coinQueryJob?.cancel()
+        coinQueryJob = lifecycleScope.launch {
+            flow.collectLatest {
                 coinsAdapter.submitData(it)
             }
         }
@@ -82,7 +117,7 @@ class MainFragment: Fragment() {
     }
 
     private fun initAdapter() {
-        mainCoinRecyclerView?.adapter = coinsAdapter.withLoadStateHeaderAndFooter(
+        binding.mainCoinRecyclerView.adapter = coinsAdapter.withLoadStateHeaderAndFooter(
             header = CoinsLoadStateAdapter { coinsAdapter.retry() },
             footer = CoinsLoadStateAdapter { coinsAdapter.retry() }
         )
@@ -94,11 +129,11 @@ class MainFragment: Fragment() {
             showEmptyList(isListEmpty)
 
             // Only show the list if refresh succeeds.
-            mainCoinRecyclerView?.isVisible = loadState.mediator?.refresh is LoadState.NotLoading
+            binding.mainCoinRecyclerView.isVisible = loadState.mediator?.refresh is LoadState.NotLoading
             // Show loading spinner during initial load or refresh.
-            progressBar?.isVisible = loadState.mediator?.refresh is LoadState.Loading
+            binding.progressBar.isVisible = loadState.mediator?.refresh is LoadState.Loading
             // Show the retry state if initial load or refresh fails.
-            retryButton?.isVisible = loadState.mediator?.refresh is LoadState.Error
+            binding.retryButton.isVisible = loadState.mediator?.refresh is LoadState.Error
             // Toast on any error, regardless of whether it came from RemoteMediator or PagingSource
             val errorState = loadState.source.append as? LoadState.Error
                 ?: loadState.source.prepend as? LoadState.Error
@@ -116,11 +151,11 @@ class MainFragment: Fragment() {
 
     private fun showEmptyList(show: Boolean) {
         if (show) {
-            emptyListText?.visibility = View.VISIBLE
-            mainCoinRecyclerView?.visibility = View.GONE
+            binding.emptyList.visibility = View.VISIBLE
+            binding.mainCoinRecyclerView.visibility = View.GONE
         } else {
-            emptyListText?.visibility = View.GONE
-            mainCoinRecyclerView?.visibility = View.VISIBLE
+            binding.emptyList.visibility = View.GONE
+            binding.mainCoinRecyclerView.visibility = View.VISIBLE
         }
     }
 }

@@ -10,5 +10,10 @@
     <string name="change_7d_txt">Change 7d</string>
     <string name="change_1h_txt">Change 1h</string>
     <string name="coin_price">%f$</string>
+    <string name="coin_name_placeholder">Coin Name</string>
+    <string name="sort">Sort</string>
+    <string name="market_cap">Market Cap</string>
+    <string name="day_30_volume">30 day volume</string>
+    <string name="new_coins">New Coins</string>
 
 </resources>

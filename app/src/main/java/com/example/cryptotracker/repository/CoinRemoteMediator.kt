@@ -11,6 +11,7 @@ import com.example.cryptotracker.api.ApiHelper
 import com.example.cryptotracker.api.ApiSuccessResponse
 import com.example.cryptotracker.db.AppDatabase
 import com.example.cryptotracker.models.CoinData
+import com.example.cryptotracker.models.CoinsSortingTypes
 import com.example.cryptotracker.utils.Utils
 import retrofit2.HttpException
 import java.io.IOException
@@ -19,7 +20,9 @@ import javax.inject.Inject
 @ExperimentalPagingApi
 class CoinRemoteMediator @Inject constructor(
     private val networkService: ApiHelper,
-    private val database: AppDatabase
+    private val database: AppDatabase,
+    private val coinSort: CoinsSortingTypes,
+    private val ifReload: Boolean
 ) : RemoteMediator<Int, CoinData>() {
     private val coinDao = database.coinDao()
 
@@ -49,8 +52,14 @@ class CoinRemoteMediator @Inject constructor(
             // Retrofit's Coroutine CallAdapter dispatches on a worker
             // thread.
             val pageSize = state.config.pageSize
+            val sort = when(coinSort) {
+                CoinsSortingTypes.MARKET_CAP -> Pair("market_cap", "desc")
+                CoinsSortingTypes.VOLUME -> Pair("volume_30d", "desc")
+                CoinsSortingTypes.NEW_COINS -> Pair("date_added", "desc")
+            }
+
             val response = networkService.getCoinListings(
-                    start = loadKey, limit = pageSize
+                    start = loadKey, limit = pageSize, sort = sort.first, sortDir = sort.second
                 )
 
             var endOfPagination = false
@@ -62,7 +71,7 @@ class CoinRemoteMediator @Inject constructor(
                             endOfPagination = true
                         }
 
-                        if (loadType == LoadType.REFRESH) {
+                        if (loadType == LoadType.REFRESH || ifReload) {
                             coinDao.deleteCoins()
                         }
 

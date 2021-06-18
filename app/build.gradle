@@ -19,7 +19,6 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "COINMARKETCAP_KEY", apikeyProperties['COINMARKETCAP_KEY'])
@@ -77,8 +76,6 @@ dependencies {
     testImplementation "org.mockito.kotlin:mockito-kotlin:3.2.0"
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    //Multidex
-    implementation"androidx.multidex:multidex:2.0.1"
     // Paging Library
     def paging_version = "3.0.0"
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
@@ -100,9 +97,8 @@ dependencies {
     androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
     // Make Hilt generate code in the androidTest folder
     kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
-    // Image loading - Glide
-    implementation 'com.github.bumptech.glide:glide:4.12.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+    // Image loading - Picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
     // Room
     def room_version = "2.3.0"
     implementation "androidx.room:room-runtime:$room_version"

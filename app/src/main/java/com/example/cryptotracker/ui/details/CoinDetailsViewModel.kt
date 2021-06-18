@@ -1,23 +1,20 @@
 package com.example.cryptotracker.ui.details
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.util.Log
+import androidx.lifecycle.*
 import androidx.paging.ExperimentalPagingApi
 import com.example.cryptotracker.models.CoinData
 import com.example.cryptotracker.repository.CoinRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @ExperimentalPagingApi
 @HiltViewModel
 class CoinDetailsViewModel @Inject constructor(private val coinRepository: CoinRepository) : ViewModel() {
-    private var _coinData = MutableStateFlow<CoinData?>(null)
-    val coinData: StateFlow<CoinData?> = _coinData
+    private val _coinData = MutableLiveData<CoinData?>(null)
+    val coinData: LiveData<CoinData?> = _coinData
 
     fun setCoinDataId(id: String) {
         viewModelScope.launch {

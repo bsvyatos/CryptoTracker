@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/market_cap"
+        android:title="@string/market_cap" />
+    <item
+        android:id="@+id/volume"
+        android:title="@string/day_30_volume" />
+    <item
+        android:id="@+id/new_coins"
+        android:title="@string/new_coins" />
+</menu>

@@ -27,6 +27,7 @@ class CoinDetailsFragment : Fragment() {
     ): View {
         val binding = CoinDetailsFragmentBinding.inflate(inflater, container, false)
         binding.viewModel = coinDetailsViewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 

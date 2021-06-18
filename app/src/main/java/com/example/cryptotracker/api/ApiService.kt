@@ -11,7 +11,7 @@ interface ApiService {
     suspend fun getCoinListingById(@Query("id") id: String): ApiResponse<CoinQuotesResponse>
 
     @GET("cryptocurrency/listings/latest")
-    suspend fun getCoinListings(@Query("start") start: Int? = 1, @Query("limit") limit: Int = 10): ApiResponse<CoinListingsResponse>
+    suspend fun getCoinListings(@Query("start") start: Int?, @Query("limit") limit: Int, @Query("sort") sort: String, @Query("sort_dir") sortDir: String): ApiResponse<CoinListingsResponse>
 
     @GET("cryptocurrency/info")
     suspend fun getCoinMetaData(@Query("id", encoded = true) ids: String): ApiResponse<CoinMetaDataResponse>

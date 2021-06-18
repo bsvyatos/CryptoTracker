@@ -14,6 +14,7 @@ import com.example.cryptotracker.utils.NetworkBoundResource
 import com.example.cryptotracker.utils.Resource
 import androidx.lifecycle.lifecycleScope
 import com.example.cryptotracker.api.ApiSuccessResponse
+import com.example.cryptotracker.models.CoinsSortingTypes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -31,7 +32,7 @@ class CoinRepository @Inject constructor(
         private const val NETWORK_PAGE_SIZE = 20
     }
 
-    fun getCoinsStream(): Flow<PagingData<CoinData>> {
+    fun getCoinsStream(sortType: CoinsSortingTypes, ifReload: Boolean): Flow<PagingData<CoinData>> {
         val pagingSourceFactory = { database.coinDao().getCoinPagingSource() }
 
         return Pager(
@@ -39,7 +40,7 @@ class CoinRepository @Inject constructor(
                 pageSize = NETWORK_PAGE_SIZE,
                 enablePlaceholders = false,
                 initialLoadSize = NETWORK_PAGE_SIZE),
-            remoteMediator = CoinRemoteMediator(networkService, database),
+            remoteMediator = CoinRemoteMediator(networkService, database, sortType, ifReload),
             pagingSourceFactory = pagingSourceFactory
         ).flow
     }
