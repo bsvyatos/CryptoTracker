@@ -1,26 +1,205 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.example.cryptotracker.ui.details.CoinDetailsViewModel" />
-        
+
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="@dimen/base_horizontal_margin"
+        android:layout_marginVertical="@dimen/base_vertical_margin"
         tools:context=".ui.details.CoinDetailsFragment">
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
             android:text="@{viewModel.coinData.name, default=@string/coin_name_placeholder}"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+        <Button
+            android:id="@+id/website_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{viewModel.websiteClick}"
+            android:paddingHorizontal="@dimen/details_buttons_horizontal_margin"
+            android:paddingVertical="@dimen/details_buttons_vertical_margin"
+            android:text="@string/website"
+            android:textAllCaps="false"
+            app:backgroundTint="@color/website_tint"
+            app:icon="@drawable/ic_web_globe_icon_24dp"
+            app:iconGravity="textStart"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/twitter_link"
+            app:layout_constraintStart_toStartOf="parent"
+            app:shapeAppearanceOverlay="@style/pill_shaped_button" />
+
+        <Button
+            android:id="@+id/twitter_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/helvetica_family"
+            android:onClick="@{viewModel.twitterClick}"
+            android:paddingHorizontal="@dimen/details_buttons_horizontal_margin"
+            android:paddingVertical="@dimen/details_buttons_vertical_margin"
+            android:text="@string/twitter"
+            android:textAllCaps="false"
+            app:backgroundTint="@color/twitter_tint"
+            app:icon="@drawable/ic_twitter_icon_24dp"
+            app:iconGravity="textStart"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/website_link"
+            app:shapeAppearanceOverlay="@style/pill_shaped_button" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="@dimen/details_logo_size"
+            android:layout_height="@dimen/details_logo_size"
+            android:contentDescription="@string/coin_logo_img_desc"
+            app:imageUrl="@{viewModel.coinData.logo}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/ic_default_crypto_icon"/>
+
+        <TextView
+            android:id="@+id/symbol_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
+            android:text="@{viewModel.coinData.symbol, default=@string/symbol}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/symbol_txt">
+            <TextView
+                android:id="@+id/metrics"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/metrics"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/coin_price_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/price"
+                android:layout_marginTop="@dimen/a_little_bigger_margin"
+                app:layout_constraintTop_toBottomOf="@+id/metrics"
+                app:layout_constraintLeft_toLeftOf="parent"/>
+
+            <TextView
+                android:id="@+id/coin_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:doubleString="@{viewModel.coinData.quote.USD.price}"
+                app:layout_constraintLeft_toRightOf="@+id/coin_price_txt"
+                app:layout_constraintTop_toTopOf="@+id/coin_price_txt"
+                app:layout_constraintRight_toRightOf="parent"/>
+
+            <TextView
+                android:id="@+id/max_supply_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/max_supply"
+                android:layout_marginTop="@dimen/small_margin"
+                app:layout_constraintTop_toBottomOf="@+id/coin_price_txt"
+                app:layout_constraintLeft_toLeftOf="parent"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.coinData.maxSupply.toString()}"
+                app:layout_constraintTop_toTopOf="@+id/max_supply_txt"
+                app:layout_constraintLeft_toRightOf="@id/max_supply_txt"/>
+
+            <TextView
+                android:id="@+id/curr_supply_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/current_supply"
+                android:layout_marginTop="@dimen/small_margin"
+                app:layout_constraintTop_toBottomOf="@+id/max_supply_txt"
+                app:layout_constraintLeft_toLeftOf="parent"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.coinData.circulatingSupply.toString()}"
+                app:layout_constraintTop_toTopOf="@+id/curr_supply_txt"
+                app:layout_constraintLeft_toRightOf="@id/curr_supply_txt"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/symbol_txt">
+
+            <TextView
+                android:id="@+id/growth_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/growth"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.example.cryptotracker.utils.ColoredChangeTextView
+                android:id="@+id/change_1h"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/a_little_bigger_margin"
+                android:text="@string/change_1h_txt"
+                app:changePeriod="@{@string/text_1h}"
+                app:changeTxt="@{viewModel.coinData.quote.USD.percent_change_24h}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/growth_title" />
+
+            <com.example.cryptotracker.utils.ColoredChangeTextView
+                android:id="@+id/change_24h"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_margin"
+                android:text="@string/change_in_24h_txt"
+                app:changePeriod="@{@string/text_24h}"
+                app:changeTxt="@{viewModel.coinData.quote.USD.percent_change_24h}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/change_1h" />
+
+            <com.example.cryptotracker.utils.ColoredChangeTextView
+                android:id="@+id/change_7d"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_margin"
+                android:text="@string/change_7d_txt"
+                app:changePeriod="@{@string/text_7d}"
+                app:changeTxt="@{viewModel.coinData.quote.USD.percent_change_24h}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/change_24h" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

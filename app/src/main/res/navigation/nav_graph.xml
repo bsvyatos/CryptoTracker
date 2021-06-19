@@ -27,5 +27,21 @@
             android:name="coinId"
             app:argType="string"
             android:defaultValue="1"/>
+        <action
+            android:id="@+id/action_coinDetailsFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment" >
+            <argument
+                android:name="websiteUrl"
+                app:argType="string" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="com.example.cryptotracker.ui.webview.WebViewFragment"
+        android:label="WebViewFragment" >
+        <argument
+            android:name="websiteUrl"
+            app:argType="string"
+            android:defaultValue=""/>
     </fragment>
 </navigation>

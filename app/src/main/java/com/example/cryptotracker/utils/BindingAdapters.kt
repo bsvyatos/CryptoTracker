@@ -1,6 +1,8 @@
 package com.example.cryptotracker.utils
 
 import android.annotation.SuppressLint
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -28,6 +30,22 @@ fun loadImage(view: ImageView, url: String?) {
 @BindingAdapter(value = ["changeTxt", "changePeriod"], requireAll = false)
 fun setChangeText(view: TextView, text: Double?, period: String) {
     text?.let {
-        view.text = String.format(period, it.toString())
+        view.text = String.format(period, it.format(4))
     }
+}
+@BindingAdapter("doubleString")
+fun setDoubleString(view: TextView, double: Double?) {
+    double?.let {
+        view.setText(it.format(2))
+    }
+}
+
+@BindingAdapter("loadUrl")
+fun loadUrl(view: WebView, url: String) {
+    view.loadUrl(url)
+}
+
+@BindingAdapter("setWebViewClient")
+fun setWebViewClient(view: WebView, client: WebViewClient) {
+    view.webViewClient = client
 }
