@@ -1,14 +1,16 @@
 package com.example.cryptotracker.ui.details
 
-import android.util.Log
 import android.view.View
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import com.example.cryptotracker.models.CoinData
 import com.example.cryptotracker.repository.CoinRepository
 import com.example.cryptotracker.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,7 +24,7 @@ class CoinDetailsViewModel @Inject constructor(private val coinRepository: CoinR
 
     fun setCoinDataId(id: String) {
         viewModelScope.launch {
-            coinRepository.getCachedCoinDataById(id, viewModelScope).collectLatest {
+            coinRepository.getCachedCoinDataById(id).collectLatest {
                 _coinData.value = it
             }
         }

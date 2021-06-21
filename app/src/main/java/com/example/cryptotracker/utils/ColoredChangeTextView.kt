@@ -7,7 +7,8 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.withStyledAttributes
 import com.example.cryptotracker.R
 
-class ColoredChangeTextView(context: Context, attrs: AttributeSet): AppCompatTextView(context, attrs) {
+class ColoredChangeTextView(context: Context, attrs: AttributeSet) :
+    AppCompatTextView(context, attrs) {
     private var minusColor = Color.RED
     private var plusColor = Color.GREEN
     private var maxColor = 1

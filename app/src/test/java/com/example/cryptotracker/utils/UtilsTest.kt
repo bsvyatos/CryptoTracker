@@ -30,11 +30,6 @@ class UtilsTest : TestCase() {
     }
 
     @Test
-    fun testNextPageValue() {
-        assert(Utils.getNextPageValue(pageList) == 21)
-    }
-
-    @Test
     fun testCommaSeparatedIds() {
         assertEquals("1,2,3,4,5,6,7, 8, 9, 10", Utils.getCommaSeparatedIds(listOfCoins))
     }

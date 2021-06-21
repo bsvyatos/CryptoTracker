@@ -9,4 +9,7 @@
     <dimen name="details_logo_size">64dp</dimen>
     <dimen name="small_margin">5dp</dimen>
     <dimen name="a_little_bigger_margin">8dp</dimen>
+    <dimen name="main_item_info_margin">20dp</dimen>
+    <dimen name="main_item_horizontal_margin">15dp</dimen>
+    <dimen name="main_item_icon_size">32dp</dimen>
 </resources>

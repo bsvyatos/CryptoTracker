@@ -1,4 +1,5 @@
 package com.example.cryptotracker.api
+
 import retrofit2.Response
 
 sealed class ApiResponse<T> {

@@ -6,8 +6,6 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.example.cryptotracker.models.CoinData
 import com.example.cryptotracker.ui.main.MainViewModel
-import dagger.hilt.EntryPoint
-import javax.inject.Inject
 
 @ExperimentalPagingApi
 class CoinsAdapter(val viewModel: MainViewModel) : PagingDataAdapter<CoinData, CoinViewHolder>(COIN_COMPARATOR) {

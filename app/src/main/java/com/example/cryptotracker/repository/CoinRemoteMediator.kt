@@ -31,46 +31,36 @@ class CoinRemoteMediator @Inject constructor(
         state: PagingState<Int, CoinData>
     ): MediatorResult {
         return try {
-            // The network load method takes an optional after=<user.id>
-            // parameter. For every page after the first, pass the last user
-            // ID to let it continue from where it left off. For REFRESH,
-            // pass null to load the first page.
             val loadKey = when (loadType) {
                 LoadType.REFRESH -> 1
-                // In this example, you never need to prepend, since REFRESH
-                // will always load the first page in the list. Immediately
-                // return, reporting end of pagination.
                 LoadType.PREPEND ->
                     return MediatorResult.Success(endOfPaginationReached = true)
                 LoadType.APPEND -> {
-                    Utils.getNextPageValue(state.pages)
+                    coinDao.getCoinRowCount() + 1
                 }
             }
 
-            // Suspending network load via Retrofit. This doesn't need to be
-            // wrapped in a withContext(Dispatcher.IO) { ... } block since
-            // Retrofit's Coroutine CallAdapter dispatches on a worker
-            // thread.
             val pageSize = state.config.pageSize
-            val sort = when(coinSort) {
+            val sort = when (coinSort) {
                 CoinsSortingTypes.MARKET_CAP -> Pair("market_cap", "desc")
                 CoinsSortingTypes.VOLUME -> Pair("volume_30d", "desc")
                 CoinsSortingTypes.NEW_COINS -> Pair("date_added", "desc")
             }
 
             val response = networkService.getCoinListings(
-                    start = loadKey, limit = pageSize, sort = sort.first, sortDir = sort.second
-                )
+                start = loadKey, limit = pageSize, sort = sort.first, sortDir = sort.second
+            )
 
             var endOfPagination = false
 
-            when(response) {
+            when (response) {
                 is ApiSuccessResponse -> {
                     database.withTransaction {
-                        if(response.body.data.isEmpty()) {
+                        if (response.body.data.isEmpty()) {
                             endOfPagination = true
                         }
 
+                        // Remove current items in the db if we're refreshing
                         if (loadType == LoadType.REFRESH || ifReload) {
                             coinDao.deleteCoins()
                         }
@@ -79,16 +69,11 @@ class CoinRemoteMediator @Inject constructor(
 
                         // Get a list of coin ids in this format "id1, id2, ..., idn"
                         val ids = Utils.getCommaSeparatedIds(data)
-
-//                        val ids: List<Int> = data.mapNotNull {
-//                            it.id
-//                        }
-
                         val metaDataResponse = networkService.getCoinsMetadata(ids)
 
                         // If metadata response is successful fill missing metadata specific
                         // variables like logos
-                        if(metaDataResponse is ApiSuccessResponse) {
+                        if (metaDataResponse is ApiSuccessResponse) {
                             data.forEach { currData ->
                                 metaDataResponse.body.data[currData.id.toString()]?.let { metaData ->
                                     currData.logo = metaData.logo
@@ -98,9 +83,8 @@ class CoinRemoteMediator @Inject constructor(
                             }
                         }
 
-                        // Insert new users into database, which invalidates the
-                        // current PagingData, allowing Paging to present the updates
-                        // in the DB.
+                        // Room is the source of truth in this approach, thus new data is just
+                        // inserted inside it
                         coinDao.insertAll(response.body.data)
                     }
                 }

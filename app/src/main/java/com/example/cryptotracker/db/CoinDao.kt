@@ -1,6 +1,5 @@
 package com.example.cryptotracker.db
 
-import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import androidx.room.*
 import com.example.cryptotracker.models.CoinData
@@ -23,6 +22,9 @@ interface CoinDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCoin(coin: CoinData)
+
+    @Query("SELECT COUNT(id) FROM coins")
+    suspend fun getCoinRowCount(): Int
 
     @Query("DELETE FROM coins")
     fun deleteCoins()

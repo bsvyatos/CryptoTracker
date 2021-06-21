@@ -1,10 +1,10 @@
 package com.example.cryptotracker.ui.details
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -18,15 +18,17 @@ import dagger.hilt.android.AndroidEntryPoint
 class CoinDetailsFragment : Fragment() {
     private val args: CoinDetailsFragmentArgs by navArgs()
     private val viewModel: CoinDetailsViewModel by viewModels()
+    private lateinit var binding: CoinDetailsFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = CoinDetailsFragmentBinding.inflate(inflater, container, false)
+        binding = CoinDetailsFragmentBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         setUpEventListening()
+        setUpVisibility()
         return binding.root
     }
 
@@ -44,6 +46,18 @@ class CoinDetailsFragment : Fragment() {
             val action = CoinDetailsFragmentDirections
                 .actionCoinDetailsFragmentToWebViewFragment(it)
             findNavController().navigate(action)
+        })
+    }
+
+    private fun setUpVisibility() {
+        viewModel.coinData.observe(viewLifecycleOwner, {
+            if(it == null) {
+                binding.referenceGroup.visibility = View.GONE
+            } else if(it.urls?.twitter == null) {
+                binding.twitterLink.visibility = View.GONE
+            } else if(it.urls?.website == null) {
+                binding.websiteLink.visibility = View.GONE
+            }
         })
     }
 

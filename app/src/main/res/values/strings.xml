@@ -4,12 +4,14 @@
     <string name="no_results">No Results</string>
     <string name="coin_logo_img_desc">Coin logo</string>
     <string name="change_in_24h_txt">Change in 24h</string>
-    <string name="text_24h">1%s 24h</string>
-    <string name="text_1h">1%s 1h</string>
-    <string name="text_7d">1%s 7d</string>
+    <string name="text_1h">%s 1h</string>
+    <string name="text_7d">%s 7d</string>
+    <string name="text_24h">%s 24h</string>
+    <string name="text_30d">%s 30d</string>
     <string name="change_7d_txt">Change 7d</string>
     <string name="change_1h_txt">Change 1h</string>
-    <string name="coin_price">%f$</string>
+    <string name="coin_price">%.3f$</string>
+    <string name="usd_format">%s$</string>
     <string name="twitter">Twitter</string>
     <string name="coin_name_placeholder">Coin Name</string>
     <string name="sort">Sort</string>
@@ -23,5 +25,6 @@
     <string name="price">Price</string>
     <string name="max_supply">Max Supply</string>
     <string name="current_supply">Current Supply</string>
-
+    <string name="webview_error">Error Loading The Webpage</string>
+    <string name="volume_market_cap">Volume / Market Cap</string>
 </resources>

@@ -1,5 +1,8 @@
 package com.example.cryptotracker.models
 
+import com.google.gson.annotations.SerializedName
+
 data class Quote(
-    val USD: USD
+    @SerializedName("USD")
+    val dollar: Dollar
 )

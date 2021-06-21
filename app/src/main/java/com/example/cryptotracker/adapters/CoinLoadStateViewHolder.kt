@@ -14,7 +14,7 @@ import com.example.cryptotracker.R
 class CoinLoadStateViewHolder(
     itemView: View,
     retry: () -> Unit
-): RecyclerView.ViewHolder(itemView) {
+) : RecyclerView.ViewHolder(itemView) {
     var progressBar: ProgressBar? = null
     var retryButton: Button? = null
     var errorMsg: TextView? = null

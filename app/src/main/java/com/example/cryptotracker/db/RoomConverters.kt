@@ -2,7 +2,6 @@ package com.example.cryptotracker.db
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
-import com.example.cryptotracker.models.CoinMetadata
 import com.example.cryptotracker.models.Quote
 import com.example.cryptotracker.models.Urls
 import com.google.gson.Gson

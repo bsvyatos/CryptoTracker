@@ -2,7 +2,10 @@ package com.example.cryptotracker.ui.main
 
 import android.view.MenuItem
 import android.view.View
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -12,7 +15,7 @@ import com.example.cryptotracker.models.CoinsSortingTypes
 import com.example.cryptotracker.repository.CoinRepository
 import com.example.cryptotracker.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @ExperimentalPagingApi

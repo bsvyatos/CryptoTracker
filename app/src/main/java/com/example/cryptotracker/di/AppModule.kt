@@ -1,7 +1,6 @@
 package com.example.cryptotracker.di
 
 import android.content.Context
-import android.provider.SyncStateContract
 import com.example.cryptotracker.BuildConfig
 import com.example.cryptotracker.api.ApiHelper
 import com.example.cryptotracker.api.ApiHelperImpl
@@ -30,7 +29,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAuthHeaderInterceptor(): AuthHeaderInterceptor = AuthHeaderInterceptor(BuildConfig.COINMARKETCAP_KEY)
+    fun provideAuthHeaderInterceptor(): AuthHeaderInterceptor =
+        AuthHeaderInterceptor(BuildConfig.COINMARKETCAP_KEY)
 
     @Provides
     @Singleton
@@ -38,10 +38,13 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor, authHeaderInterceptor: AuthHeaderInterceptor) = if(BuildConfig.DEBUG) {
+    fun provideOkHttpClient(
+        loggingInterceptor: HttpLoggingInterceptor,
+        authHeaderInterceptor: AuthHeaderInterceptor
+    ) = if (BuildConfig.DEBUG) {
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
         OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor)
+//            .addInterceptor(loggingInterceptor)
             .addInterceptor(authHeaderInterceptor)
             .build()
     } else {
@@ -69,7 +72,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideDataBase(@ApplicationContext appContext: Context, gson: Gson) = AppDatabase.getDatabase(appContext, gson)
+    fun provideDataBase(@ApplicationContext appContext: Context, gson: Gson) =
+        AppDatabase.getDatabase(appContext, gson)
 
     @Singleton
     @Provides

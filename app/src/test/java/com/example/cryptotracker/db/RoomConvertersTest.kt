@@ -1,6 +1,5 @@
 package com.example.cryptotracker.db
 
-import com.example.cryptotracker.models.CoinMetadata
 import com.google.gson.Gson
 import junit.framework.TestCase
 import org.junit.Before

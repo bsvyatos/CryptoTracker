@@ -18,6 +18,12 @@
         android:layout_marginVertical="@dimen/base_vertical_margin"
         tools:context=".ui.details.CoinDetailsFragment">
 
+        <androidx.constraintlayout.widget.Group
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="website_link, twitter_link"
+            android:id="@+id/reference_group" />
+
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
@@ -111,7 +117,8 @@
                 android:id="@+id/coin_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:doubleString="@{viewModel.coinData.quote.USD.price}"
+                app:doubleString="@{viewModel.coinData.quote.dollar.price}"
+                app:format="@{@string/usd_format}"
                 app:layout_constraintLeft_toRightOf="@+id/coin_price_txt"
                 app:layout_constraintTop_toTopOf="@+id/coin_price_txt"
                 app:layout_constraintRight_toRightOf="parent"/>
@@ -128,9 +135,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{viewModel.coinData.maxSupply.toString()}"
+                doubleString="@{viewModel.coinData.maxSupply}"
                 app:layout_constraintTop_toTopOf="@+id/max_supply_txt"
-                app:layout_constraintLeft_toRightOf="@id/max_supply_txt"/>
+                app:layout_constraintLeft_toRightOf="@id/max_supply_txt"
+                app:layout_constraintRight_toRightOf="parent"/>
 
             <TextView
                 android:id="@+id/curr_supply_txt"
@@ -144,9 +152,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{viewModel.coinData.circulatingSupply.toString()}"
+                doubleString="@{viewModel.coinData.circulatingSupply}"
                 app:layout_constraintTop_toTopOf="@+id/curr_supply_txt"
-                app:layout_constraintLeft_toRightOf="@id/curr_supply_txt"/>
+                app:layout_constraintLeft_toRightOf="@id/curr_supply_txt"
+                app:layout_constraintRight_toRightOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -171,7 +180,7 @@
                 android:layout_marginTop="@dimen/a_little_bigger_margin"
                 android:text="@string/change_1h_txt"
                 app:changePeriod="@{@string/text_1h}"
-                app:changeTxt="@{viewModel.coinData.quote.USD.percent_change_24h}"
+                app:changeTxt="@{viewModel.coinData.quote.dollar.percent_change_1h}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/growth_title" />
@@ -183,7 +192,7 @@
                 android:layout_marginTop="@dimen/small_margin"
                 android:text="@string/change_in_24h_txt"
                 app:changePeriod="@{@string/text_24h}"
-                app:changeTxt="@{viewModel.coinData.quote.USD.percent_change_24h}"
+                app:changeTxt="@{viewModel.coinData.quote.dollar.percent_change_24h}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/change_1h" />
@@ -195,10 +204,22 @@
                 android:layout_marginTop="@dimen/small_margin"
                 android:text="@string/change_7d_txt"
                 app:changePeriod="@{@string/text_7d}"
-                app:changeTxt="@{viewModel.coinData.quote.USD.percent_change_24h}"
+                app:changeTxt="@{viewModel.coinData.quote.dollar.percent_change_7d}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/change_24h" />
+
+            <com.example.cryptotracker.utils.ColoredChangeTextView
+                android:id="@+id/change_30d"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_margin"
+                android:text="@string/change_7d_txt"
+                app:changePeriod="@{@string/text_30d}"
+                app:changeTxt="@{viewModel.coinData.quote.dollar.percent_change_30d}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/change_7d" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

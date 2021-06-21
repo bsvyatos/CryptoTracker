@@ -11,11 +11,17 @@ class ApiResponseResultCall<T>(private val delegate: Call<T>) : Call<ApiResponse
         object : Callback<T> {
 
             override fun onResponse(call: Call<T>, response: Response<T>) {
-                callback.onResponse(this@ApiResponseResultCall, Response.success(ApiResponse.create(response)))
+                callback.onResponse(
+                    this@ApiResponseResultCall,
+                    Response.success(ApiResponse.create(response))
+                )
             }
 
             override fun onFailure(call: Call<T>, throwable: Throwable) {
-                callback.onResponse(this@ApiResponseResultCall, Response.success(ApiResponse.create<T>(throwable)))
+                callback.onResponse(
+                    this@ApiResponseResultCall,
+                    Response.success(ApiResponse.create<T>(throwable))
+                )
             }
         }
     )

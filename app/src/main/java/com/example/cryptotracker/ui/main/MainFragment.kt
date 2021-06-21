@@ -18,7 +18,6 @@ import com.example.cryptotracker.adapters.CoinsAdapter
 import com.example.cryptotracker.adapters.CoinsLoadStateAdapter
 import com.example.cryptotracker.databinding.MainFragmentBinding
 import com.example.cryptotracker.models.CoinData
-import com.example.cryptotracker.models.CoinsSortingTypes
 import com.example.cryptotracker.utils.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -40,7 +39,10 @@ class MainFragment: Fragment() {
     ): View {
         binding = MainFragmentBinding.inflate(inflater, container, false)
         val decoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
-        binding.mainCoinRecyclerView.addItemDecoration(decoration)
+        binding.mainCoinRecyclerView.apply {
+            setHasFixedSize(true)
+            addItemDecoration(decoration)
+        }
         setHasOptionsMenu(true)
         coinsAdapter = CoinsAdapter(viewModel)
         initAdapter()
@@ -117,8 +119,7 @@ class MainFragment: Fragment() {
     }
 
     private fun initAdapter() {
-        binding.mainCoinRecyclerView.adapter = coinsAdapter.withLoadStateHeaderAndFooter(
-            header = CoinsLoadStateAdapter { coinsAdapter.retry() },
+        binding.mainCoinRecyclerView.adapter = coinsAdapter.withLoadStateFooter(
             footer = CoinsLoadStateAdapter { coinsAdapter.retry() }
         )
 

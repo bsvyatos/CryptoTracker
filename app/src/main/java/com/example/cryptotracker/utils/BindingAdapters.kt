@@ -1,17 +1,11 @@
 package com.example.cryptotracker.utils
 
-import android.annotation.SuppressLint
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import androidx.paging.ExperimentalPagingApi
-import androidx.paging.PagingData
-import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptotracker.R
-import com.example.cryptotracker.adapters.CoinsAdapter
-import com.example.cryptotracker.models.CoinData
 import com.squareup.picasso.Picasso
 
 @BindingAdapter("imageUrl", requireAll = false)
@@ -33,10 +27,11 @@ fun setChangeText(view: TextView, text: Double?, period: String) {
         view.text = String.format(period, it.format(4))
     }
 }
-@BindingAdapter("doubleString")
-fun setDoubleString(view: TextView, double: Double?) {
+@BindingAdapter(value = ["doubleString", "format"], requireAll = false)
+fun setDoubleString(view: TextView, double: Double?, format: String?) {
     double?.let {
-        view.setText(it.format(2))
+        val doubleString = it.format(3)
+        view.text = format?.let { formatStr -> String.format(formatStr, doubleString) } ?: doubleString
     }
 }
 

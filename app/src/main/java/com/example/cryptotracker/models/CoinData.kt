@@ -1,7 +1,9 @@
 package com.example.cryptotracker.models
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import com.example.cryptotracker.utils.divNull
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "coins")
@@ -29,5 +31,9 @@ data class CoinData(
     val totalSupply: Double? = null,
     var logo: String? = null,
     var urls: Urls? = null,
-    var twitterUsername: String? = null
-)
+    var twitterUsername: String? = null,
+) {
+    val volumeCap: Double?
+        get() = this.quote?.dollar?.volume_24h.divNull(this.quote?.dollar?.market_cap)
+
+}

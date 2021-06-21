@@ -11,11 +11,12 @@ import com.google.gson.Gson
 
 @Database(entities = [CoinData::class], version = 1, exportSchema = false)
 @TypeConverters(RoomConverters::class)
-abstract class AppDatabase: RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
     abstract fun coinDao(): CoinDao
 
     companion object {
-        @Volatile private var instance: AppDatabase? = null
+        @Volatile
+        private var instance: AppDatabase? = null
 
         fun getDatabase(context: Context, gson: Gson): AppDatabase =
             instance ?: synchronized(this) { instance ?: buildDatabase(context, gson) }

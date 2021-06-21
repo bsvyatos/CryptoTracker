@@ -1,6 +1,6 @@
 package com.example.cryptotracker.models
 
-data class USD(
+data class Dollar(
     val last_updated: String,
     val market_cap: Double,
     val percent_change_1h: Double,
