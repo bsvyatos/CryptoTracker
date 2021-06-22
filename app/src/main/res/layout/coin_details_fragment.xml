@@ -18,18 +18,14 @@
         android:layout_marginVertical="@dimen/base_vertical_margin"
         tools:context=".ui.details.CoinDetailsFragment">
 
-        <androidx.constraintlayout.widget.Group
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="website_link, twitter_link"
-            android:id="@+id/reference_group" />
-
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/small_margin"
             android:text="@{viewModel.coinData.name, default=@string/coin_name_placeholder}"
+            android:textSize="24sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -74,11 +70,11 @@
             android:layout_width="@dimen/details_logo_size"
             android:layout_height="@dimen/details_logo_size"
             android:contentDescription="@string/coin_logo_img_desc"
+            android:src="@drawable/ic_default_crypto_icon"
             app:imageUrl="@{viewModel.coinData.logo}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/ic_default_crypto_icon"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/symbol_txt"
@@ -95,6 +91,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/symbol_txt">
+
             <TextView
                 android:id="@+id/metrics"
                 android:layout_width="wrap_content"
@@ -108,54 +105,60 @@
                 android:id="@+id/coin_price_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/price"
                 android:layout_marginTop="@dimen/a_little_bigger_margin"
-                app:layout_constraintTop_toBottomOf="@+id/metrics"
-                app:layout_constraintLeft_toLeftOf="parent"/>
+                android:text="@string/price"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/metrics" />
 
             <TextView
                 android:id="@+id/coin_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/small_margin"
+                android:layout_marginLeft="@dimen/small_margin"
                 app:doubleString="@{viewModel.coinData.quote.dollar.price}"
                 app:format="@{@string/usd_format}"
                 app:layout_constraintLeft_toRightOf="@+id/coin_price_txt"
-                app:layout_constraintTop_toTopOf="@+id/coin_price_txt"
-                app:layout_constraintRight_toRightOf="parent"/>
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/coin_price_txt" />
 
             <TextView
                 android:id="@+id/max_supply_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/max_supply"
                 android:layout_marginTop="@dimen/small_margin"
-                app:layout_constraintTop_toBottomOf="@+id/coin_price_txt"
-                app:layout_constraintLeft_toLeftOf="parent"/>
+                android:text="@string/max_supply"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/coin_price_txt" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                doubleString="@{viewModel.coinData.maxSupply}"
-                app:layout_constraintTop_toTopOf="@+id/max_supply_txt"
+                android:layout_marginStart="@dimen/small_margin"
+                android:layout_marginLeft="@dimen/small_margin"
+                app:doubleAsIntString="@{viewModel.coinData.maxSupply}"
                 app:layout_constraintLeft_toRightOf="@id/max_supply_txt"
-                app:layout_constraintRight_toRightOf="parent"/>
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/max_supply_txt" />
 
             <TextView
                 android:id="@+id/curr_supply_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/current_supply"
                 android:layout_marginTop="@dimen/small_margin"
-                app:layout_constraintTop_toBottomOf="@+id/max_supply_txt"
-                app:layout_constraintLeft_toLeftOf="parent"/>
+                android:text="@string/current_supply"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/max_supply_txt" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                doubleString="@{viewModel.coinData.circulatingSupply}"
-                app:layout_constraintTop_toTopOf="@+id/curr_supply_txt"
+                android:layout_marginStart="@dimen/small_margin"
+                android:layout_marginLeft="@dimen/small_margin"
+                app:doubleAsIntString="@{viewModel.coinData.circulatingSupply}"
                 app:layout_constraintLeft_toRightOf="@id/curr_supply_txt"
-                app:layout_constraintRight_toRightOf="parent"/>
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/curr_supply_txt" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout

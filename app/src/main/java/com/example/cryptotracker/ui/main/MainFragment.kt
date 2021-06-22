@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 
 @ExperimentalPagingApi
 @AndroidEntryPoint
-class MainFragment: Fragment() {
+class MainFragment : Fragment() {
     private val viewModel: MainViewModel by viewModels()
     private lateinit var coinsAdapter: CoinsAdapter
     private lateinit var binding: MainFragmentBinding
@@ -48,6 +48,7 @@ class MainFragment: Fragment() {
         initAdapter()
         setUpNavigation()
         setEventObservers()
+        setSwipeRefresh()
         getData()
         return binding.root
     }
@@ -83,11 +84,13 @@ class MainFragment: Fragment() {
         }
     }
 
-    private fun setEventObservers() {
-        viewModel.refreshDataEvent.observe(viewLifecycleOwner, EventObserver {
+    private fun setSwipeRefresh() {
+        binding.swipeRefreshLayout.setOnRefreshListener {
             coinsAdapter.refresh()
-        })
+        }
+    }
 
+    private fun setEventObservers() {
         viewModel.retryDataEvent.observe(viewLifecycleOwner, EventObserver {
             coinsAdapter.retry()
         })
@@ -129,17 +132,24 @@ class MainFragment: Fragment() {
                 loadState.refresh is LoadState.NotLoading && coinsAdapter.itemCount == 0
             showEmptyList(isListEmpty)
 
-            // Only show the list if refresh succeeds.
-            binding.mainCoinRecyclerView.isVisible = loadState.mediator?.refresh is LoadState.NotLoading
-            // Show loading spinner during initial load or refresh.
-            binding.progressBar.isVisible = loadState.mediator?.refresh is LoadState.Loading
-            // Show the retry state if initial load or refresh fails.
-            binding.retryButton.isVisible = loadState.mediator?.refresh is LoadState.Error
+            // Show the list if refresh succeeds or we have some items to show
+            binding.mainCoinRecyclerView.isVisible =
+                loadState.mediator?.refresh is LoadState.NotLoading || !isListEmpty
+            // Show loading spinner during initial load or refresh. Don't show it if we initiated refresh with swipe
+            binding.progressBar.isVisible =
+                loadState.mediator?.refresh is LoadState.Loading && !binding.swipeRefreshLayout.isRefreshing
+            // Show the retry state if initial load or refresh fails and we have no items to show
+            binding.retryButton.isVisible =
+                loadState.mediator?.refresh is LoadState.Error && isListEmpty
+            // Hide swipeRefreshLayout if we're not loading
+            if (loadState.mediator?.refresh is LoadState.NotLoading) {
+                binding.swipeRefreshLayout.isRefreshing = false
+            }
             // Toast on any error, regardless of whether it came from RemoteMediator or PagingSource
             val errorState = loadState.source.append as? LoadState.Error
-                ?: loadState.source.prepend as? LoadState.Error
+                ?: loadState.source.refresh as? LoadState.Error
                 ?: loadState.append as? LoadState.Error
-                ?: loadState.prepend as? LoadState.Error
+                ?: loadState.refresh as? LoadState.Error
             errorState?.let {
                 Toast.makeText(
                     context,

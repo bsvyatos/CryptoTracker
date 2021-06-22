@@ -51,12 +51,16 @@ class CoinDetailsFragment : Fragment() {
 
     private fun setUpVisibility() {
         viewModel.coinData.observe(viewLifecycleOwner, {
-            if(it == null) {
-                binding.referenceGroup.visibility = View.GONE
-            } else if(it.urls?.twitter == null) {
+            if(it?.urls?.twitter == null) {
                 binding.twitterLink.visibility = View.GONE
-            } else if(it.urls?.website == null) {
+            } else {
+                binding.twitterLink.visibility = View.VISIBLE
+            }
+
+            if(it?.urls?.website == null) {
                 binding.websiteLink.visibility = View.GONE
+            } else {
+                binding.websiteLink.visibility = View.VISIBLE
             }
         })
     }

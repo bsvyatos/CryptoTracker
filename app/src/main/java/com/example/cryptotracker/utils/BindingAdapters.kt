@@ -35,6 +35,11 @@ fun setDoubleString(view: TextView, double: Double?, format: String?) {
     }
 }
 
+@BindingAdapter("doubleAsIntString")
+fun setDoubleAsIntString(view: TextView, double: Double) {
+    view.text = double.toInt().toString()
+}
+
 @BindingAdapter("loadUrl")
 fun loadUrl(view: WebView, url: String) {
     view.loadUrl(url)

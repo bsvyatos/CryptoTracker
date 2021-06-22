@@ -11,14 +11,15 @@ class ColoredChangeTextView(context: Context, attrs: AttributeSet) :
     AppCompatTextView(context, attrs) {
     private var minusColor = Color.RED
     private var plusColor = Color.GREEN
-    private var maxColor = 1
+    private var maxColor = 10
 
     init {
-        context.withStyledAttributes(attrs, R.styleable.ColoredChangeTextView) {
-            minusColor = getColor(R.styleable.ColoredChangeTextView_minusColor, minusColor)
-            plusColor = getColor(R.styleable.ColoredChangeTextView_plusColor, plusColor)
-            maxColor = getInt(R.styleable.ColoredChangeTextView_maxColorValue, maxColor)
-        }
+
+        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.ColoredChangeTextView)
+        minusColor = typedArray.getColor(R.styleable.ColoredChangeTextView_minusColor, minusColor)
+        plusColor = typedArray.getColor(R.styleable.ColoredChangeTextView_plusColor, plusColor)
+        maxColor = typedArray.getInt(R.styleable.ColoredChangeTextView_maxColorValue, maxColor)
+        typedArray.recycle()
     }
 
     override fun onTextChanged(

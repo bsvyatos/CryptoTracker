@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.cryptotracker.R
 import com.example.cryptotracker.models.CoinData
 import com.example.cryptotracker.models.CoinsSortingTypes
@@ -23,8 +24,6 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(val coinRepository: CoinRepository) : ViewModel() {
     private val _newPagingDataEvent = MutableLiveData<Event<Flow<PagingData<CoinData>>>>()
     val newPagingDataEvent: LiveData<Event<Flow<PagingData<CoinData>>>> = _newPagingDataEvent
-    private val _refreshDataEvent = MutableLiveData<Event<Unit>>()
-    val refreshDataEvent: LiveData<Event<Unit>> = _refreshDataEvent
     private val _navigateToDetailsEvent = MutableLiveData<Event<String>>()
     private val _retryDataEvent = MutableLiveData<Event<Unit>>()
     val retryDataEvent: LiveData<Event<Unit>> = _retryDataEvent
@@ -51,10 +50,6 @@ class MainViewModel @Inject constructor(val coinRepository: CoinRepository) : Vi
 
     val retry = View.OnClickListener {
         _retryDataEvent.value = Event(Unit)
-    }
-
-    fun refresh() {
-        _refreshDataEvent.value = Event(Unit)
     }
 
     fun navigateToDetailsEvent(id: String) {

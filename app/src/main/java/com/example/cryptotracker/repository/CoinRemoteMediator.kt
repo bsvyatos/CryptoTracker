@@ -32,9 +32,12 @@ class CoinRemoteMediator @Inject constructor(
     ): MediatorResult {
         return try {
             val loadKey = when (loadType) {
+                // Start with first index again if refresh
                 LoadType.REFRESH -> 1
+                // We are not going to prepend pages thus return success and end of pagination flag
                 LoadType.PREPEND ->
                     return MediatorResult.Success(endOfPaginationReached = true)
+                // Simply increment the number of our coin rows to get the proper append index
                 LoadType.APPEND -> {
                     coinDao.getCoinRowCount() + 1
                 }
@@ -56,10 +59,6 @@ class CoinRemoteMediator @Inject constructor(
             when (response) {
                 is ApiSuccessResponse -> {
                     database.withTransaction {
-                        if (response.body.data.isEmpty()) {
-                            endOfPagination = true
-                        }
-
                         // Remove current items in the db if we're refreshing
                         if (loadType == LoadType.REFRESH || ifReload) {
                             coinDao.deleteCoins()
